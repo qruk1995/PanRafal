@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html class="dark" lang="pl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>BSM RYCERZ - Byczyńskie Stowarzyszenie Motocyklowe</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8ab446", // Rider Green
+                        "accent": "#e62222", // Brick Red
+                        "background-light": "#f8f6f5",
+                        "background-dark": "#0A0A0A", // Void
+                        "surface-dark": "#121212", // Matte Charcoal
+                        "surface-glass": "rgba(255, 255, 255, 0.03)",
+                        "text-main": "#E0E0E0", // Platinum
+                        "text-light": "#E0E0E0", // Platinum
+                        "text-muted": "#6B6B6B", // Carbon Fiber Grey
+                        "border-dark": "#333333",
+                        "border-subtle": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Oswald", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "none": "0",
+                        "sm": "2px", // Sharp/Brutalist
+                        "sharp": "2px",
+                        "DEFAULT": "4px",
+                        "md": "6px",
+                        "lg": "8px",
+                        "xl": "12px",
+                        "2xl": "16px",
+                        "full": "9999px",
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.6) 50%, rgba(10,10,10,0.3) 100%)',
+                        'grid-pattern': "linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)",
+                    },
+                    boxShadow: {
+                        "neon": "0 0 20px rgba(138, 180, 70, 0.3)",
+                        "glow": "0 0 20px rgba(138, 180, 70, 0.3)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF4500;
+        }
+
+        /* Custom Utilities for HUD effects */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .neon-glow:hover {
+            box-shadow: 0 0 20px rgba(138, 180, 70, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(138, 180, 70, 0.1);
+        }
+
+        /* Animation utilities */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-enter {
+            animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* About Section Styles */
+        .clip-corner {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+        }
+
+        .cyber-image {
+            filter: grayscale(100%) contrast(120%);
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+
+        .group:hover .cyber-image {
+            filter: grayscale(20%) contrast(110%);
+        }
+
+        .tech-grid {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        }
+
+        /* Footer Styles */
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            50%,
+            100% {
+                transform: translateX(200%);
+            }
+        }
+
+        @keyframes shimmer-bg {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-dark text-text-main font-body antialiased overflow-x-hidden selection:bg-primary selection:text-white">
+
+    <!-- Sticky Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-panel transition-all duration-300 h-20 flex items-center">
+        <div class="container mx-auto px-6 md:px-12 flex items-center justify-between">
+            <!-- Logo Area -->
+            <a href="#hero" class="flex items-center gap-3 group cursor-pointer">
+                <div class="relative size-12 flex items-center justify-center">
+                    <img src="./logo1.png" alt="Logo Rycerz Byczyna"
+                        class="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-110 relative z-10" />
+                    <div
+                        class="absolute inset-0 bg-primary/40 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-0">
+                    </div>
+                </div>
+                <span class="font-display font-bold text-xl tracking-wider text-white uppercase leading-none mt-1">
+                    BSM Rycerz
+                </span>
+            </a>
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-10">
+                <a class="font-display text-sm font-medium tracking-widest text-text-main hover:text-primary transition-colors duration-200 relative group"
+                    href="#about">
+                    O NAS
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a class="font-display text-sm font-medium tracking-widest text-text-main hover:text-primary transition-colors duration-200 relative group"
+                    href="#events">
+                    ZLOTY & WYDARZENIA
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a class="font-display text-sm font-medium tracking-widest text-text-main hover:text-primary transition-colors duration-200 relative group"
+                    href="#contact">
+                    KONTAKT
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative w-full min-h-screen flex flex-col">
+        <!-- Hero Content Background -->
+        <div class="absolute inset-0 z-0">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style="background-image: url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2940&auto=format&fit=crop');">
+            </div>
+            <!-- Heavy Vignette / Overlay -->
+            <div class="absolute inset-0 bg-background-dark/80 bg-hero-gradient"></div>
+            <!-- Grain Texture Overlay (Optional for grit) -->
+            <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
+                style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+            </div>
+        </div>
+        <!-- Hero Content Foreground -->
+        <main class="relative z-10 flex-grow flex flex-col justify-center px-6 md:px-12 pt-20 mb-16 md:mb-24">
+            <div class="container mx-auto max-w-7xl w-full">
+                <div class="max-w-4xl flex flex-col gap-8">
+                    <!-- Decorative HUD Element -->
+                    <div class="animate-enter w-full flex items-center gap-4 opacity-50 mb-2">
+                        <div class="h-[1px] w-12 bg-primary"></div>
+                        <span class="font-mono text-xs text-primary tracking-[0.2em]">SYS.ONLINE // 51.11° N, 18.21°
+                            E</span>
+                    </div>
+                    <!-- Main Headline -->
+                    <h1
+                        class="animate-enter delay-100 font-display font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter text-white uppercase break-words text-glow">
+                        Byczyńskie <br />
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Stowarzyszenie</span>
+                        <br />
+                        Motocyklowe <span class="text-primary">Rycerz</span>
+                    </h1>
+                    <!-- Subhead with decorative line -->
+                    <div class="animate-enter delay-200 flex items-stretch gap-6 pl-1 md:pl-2">
+                        <div class="w-1 bg-primary rounded-full shadow-[0_0_20px_rgba(138,180,70,0.8)]"></div>
+                        <p
+                            class="font-body text-xl md:text-2xl text-white font-medium max-w-xl leading-relaxed drop-shadow-md">
+                            Łączy nas pasja do dwóch kółek i wolności. <br class="hidden md:block" />
+                            Organizujemy największe zloty i jednoczymy motocyklistów z całego regionu.
+                        </p>
+                    </div>
+                    <!-- CTA Group -->
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <a href="#events"
+                            class="group relative overflow-hidden bg-primary text-black font-display font-bold text-lg tracking-wider px-8 py-4 rounded-sm transition-all duration-300 hover:scale-[1.02] neon-glow">
+                            <span class="relative z-10 flex items-center gap-2 text-background-dark">
+                                NADCHODZĄCY ZLOT
+                                <span
+                                    class="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+                            </span>
+                            <div
+                                class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer-bg_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0">
+                            </div>
+                        </a>
+                        <a href="#about"
+                            class="group relative overflow-hidden bg-transparent border border-white/20 text-white font-display font-bold text-lg tracking-wider px-8 py-4 rounded-sm transition-all duration-300 hover:bg-white hover:text-black hover:border-white">
+                            <span class="relative z-10 flex items-center gap-2">
+                                POZNAJ NAS
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Fade -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-48 lg:h-64 bg-gradient-to-t from-background-dark to-transparent pointer-events-none z-[5]">
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div
+            class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-50 z-10 pointer-events-none">
+            <span class="font-mono text-[10px] tracking-widest text-text-muted uppercase">Scroll</span>
+            <span class="material-symbols-outlined text-primary">keyboard_arrow_down</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about"
+        class="relative w-full py-20 lg:py-32 px-6 md:px-12 lg:px-24 bg-surface-dark border-y border-border-dark overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full opacity-5 pointer-events-none">
+            <div
+                class="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent">
+            </div>
+        </div>
+        <div
+            class="absolute bottom-10 left-10 text-border-dark/20 font-display text-[120px] leading-none font-bold select-none z-0 hidden lg:block">
+            01
+        </div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Narrative -->
+                <div class="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1">
+                    <div class="flex items-center gap-3">
+                        <span class="h-px w-8 bg-primary"></span>
+                        <p class="font-mono text-primary text-sm tracking-wider">01 // IDENTYFIKACJA</p>
+                    </div>
+                    <h2
+                        class="font-display text-4xl md:text-5xl lg:text-6xl font-bold uppercase leading-[0.9] tracking-tighter text-white">
+                        Lokalni <br />
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-white to-text-muted">Bohaterowie</span>
+                        <br />
+                        Szos
+                    </h2>
+                    <div class="flex gap-6 border-l border-border-dark pl-6 relative">
+                        <div class="absolute left-[-1px] top-0 h-12 w-[2px] bg-primary"></div>
+                        <p class="text-text-muted text-base md:text-lg leading-relaxed max-w-md">
+                            Jesteśmy aktywnym stowarzyszeniem motocyklowym z Byczyny. Jednoczymy pasjonatów z całego
+                            regionu, organizujemy legendarne wydarzenia, takie jak Motomarzanna czy Wielki Zlot
+                            Motocyklowy. Wspólnie tworzymy kulturę, dbamy o bezpieczeństwo i szerzymy rockowego ducha
+                            szos.
+                            <span class="block mt-4 text-text-main font-medium">Honor. Braterstwo. Maszyna.</span>
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-4 pt-6 border-t border-border-dark/50">
+                        <div>
+                            <p class="font-mono text-xs text-text-muted uppercase mb-1">Status</p>
+                            <div class="flex items-center gap-2">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                </span>
+                                <span class="font-display font-medium text-white tracking-wide">AKTYWNY</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-text-muted uppercase mb-1">Baza</p>
+                            <span class="font-display font-medium text-white tracking-wide">ul. Poznańska 6,
+                                Byczyna</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Visual -->
+                <div class="lg:col-span-7 relative group order-1 lg:order-2 h-full min-h-[400px]">
+                    <div
+                        class="relative w-full h-full clip-corner overflow-hidden bg-background-dark border border-border-dark/50">
+                        <div class="absolute inset-0 bg-cover bg-center cyber-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1596769493649-166ce6c94da8?q=80&w=2940&auto=format&fit=crop');">
+                        </div>
+                        <div
+                            class="absolute inset-0 tech-grid opacity-20 pointer-events-none bg-[image:linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80">
+                        </div>
+
+                        <div class="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none">
+                            <div class="flex justify-between items-start">
+                                <div class="flex gap-1">
+                                    <div class="w-2 h-2 bg-primary"></div>
+                                    <div class="w-2 h-2 bg-white/20"></div>
+                                    <div class="w-2 h-2 bg-white/20"></div>
+                                </div>
+                                <div
+                                    class="font-mono text-[10px] text-primary bg-black/50 backdrop-blur-sm px-2 py-1 border border-primary/30">
+                                    REC ● 00:14:23</div>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <div class="font-mono text-xs text-white/60">
+                                    <span class="text-primary">COORDS:</span> 51.11° N, 18.21° E<br />
+                                </div>
+                                <div class="w-12 h-12 border-r-2 border-b-2 border-primary/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-r border-b border-border-dark -z-10"></div>
+                    <div class="absolute -top-4 -left-4 w-12 h-12 border-l border-t border-primary/30 -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Grid Section -->
+    <section id="events" class="w-full flex flex-col items-center justify-center py-24 px-4 md:px-8 bg-background-dark">
+        <div class="w-full max-w-[1024px] flex flex-col gap-10">
+            <!-- Section Header -->
+            <div class="flex items-center justify-between border-b border-border-subtle pb-4 relative">
+                <div class="flex items-center gap-4">
+                    <div class="h-8 w-1 bg-primary shadow-[0_0_10px_#8ab446]"></div>
+                    <h2 class="font-display font-bold text-3xl md:text-4xl uppercase tracking-tight text-white">
+                        Wydarzenia & Aktualności
+                    </h2>
+                </div>
+                <div class="hidden sm:flex items-center gap-2 text-primary font-mono text-xs opacity-70">
+                    <span class="material-symbols-outlined text-sm">wifi_tethering</span>
+                    <span>FEED AKTYWNY</span>
+                </div>
+                <div
+                    class="absolute bottom-[-1px] right-0 w-1/3 h-[1px] bg-gradient-to-l from-primary/50 to-transparent">
+                </div>
+            </div>
+
+            <!-- Events Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(280px,auto)]">
+                <!-- Card 1: Featured -->
+                <a href="https://www.facebook.com/rycerz.byczyna" target="_blank"
+                    class="group relative col-span-1 md:col-span-2 overflow-hidden rounded-xl border border-border-subtle bg-surface-glass glass-panel hover:border-primary/60 hover:shadow-neon transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 z-0">
+                        <img class="h-full w-full object-cover opacity-40 group-hover:scale-105 group-hover:opacity-50 transition-all duration-700 ease-out"
+                            src="https://images.unsplash.com/photo-1558981033-0f0309284409?q=80&w=2940&auto=format&fit=crop" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent">
+                        </div>
+                    </div>
+                    <div class="relative z-10 h-full flex flex-col justify-between p-6 md:p-8">
+                        <div class="flex justify-between items-start">
+                            <span
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-black/50 border border-primary/30 rounded text-primary font-mono text-xs font-bold tracking-wider backdrop-blur-sm">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                WYDARZENIE SPECJALNE
+                            </span>
+                            <div class="text-right">
+                                <p class="text-primary font-mono font-bold text-lg md:text-xl">30 MAJA 10:00</p>
+                                <p class="text-text-muted text-xs font-mono tracking-widest">BYCZYNA, UL. POZNAŃSKA 6
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3
+                                class="font-display font-bold text-3xl md:text-5xl text-white uppercase leading-none mb-2 group-hover:text-primary transition-colors duration-300">
+                                Wielki Zlot Motocyklowy
+                            </h3>
+                            <p
+                                class="text-text-main/80 font-body text-sm md:text-base max-w-xl border-l-2 border-primary pl-4 mt-4">
+                                Zapraszamy na największy Zlot Motocyklowy Byczyńskiego Stowarzyszenia "RYCERZ". Czekają
+                                wspaniałe maszyny, ognisko, przejazdy i świetna atmosfera z ludźmi dzielącymi pasję do
+                                jednośladów.
+                            </p>
+                            <div
+                                class="mt-6 flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-widest opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                Sprawdź na Facebooku
+                                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="absolute top-4 right-4 w-6 h-6 text-white/10" fill="none" stroke="currentColor"
+                        stroke-width="1" viewbox="0 0 24 24">
+                        <path d="M2 2h5v2H4v3H2V2zM22 2h-5v2h3v3h2V2zM2 22h5v-2H4v-3H2v5zM22 22h-5v-2h3v-3h2v5z"></path>
+                    </svg>
+                </a>
+
+                <!-- Card 2: Motomarzanna -->
+                <a href="https://www.facebook.com/rycerz.byczyna" target="_blank"
+                    class="group relative overflow-hidden rounded-xl border border-border-subtle bg-surface-glass glass-panel hover:border-primary/60 hover:shadow-neon transition-all duration-300 cursor-pointer min-h-[280px]">
+                    <div class="absolute inset-0 z-0 bg-gradient-to-br from-surface-dark to-background-dark opacity-90">
+                    </div>
+                    <div class="relative z-10 p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="p-3 rounded bg-white/5 border border-white/10 text-primary group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
+                                <span class="material-symbols-outlined text-2xl">local_fire_department</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-primary font-mono font-bold">14 LUTEGO 20:00</p>
+                                <p class="text-text-muted text-[10px] font-mono tracking-widest">OGNISKO</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3
+                                class="font-display font-bold text-2xl text-white uppercase mb-2 group-hover:translate-x-1 transition-transform duration-300">
+                                MOTOMARZANNA 2026
+                            </h3>
+                            <p class="text-text-muted text-sm font-body line-clamp-3">
+                                Pierwszy dzień wiosny odpalamy jak trzeba! Zapraszamy Motocyklistów na ognisko i
+                                rozpoczęcie sezonu.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-0 right-0 p-3">
+                            <div class="w-3 h-3 border-r border-b border-primary/50"></div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card 3: Rockowe Walentynki -->
+                <a href="https://www.facebook.com/rycerz.byczyna" target="_blank"
+                    class="group relative overflow-hidden rounded-xl border border-border-subtle bg-surface-glass glass-panel hover:border-primary/60 hover:shadow-neon transition-all duration-300 cursor-pointer min-h-[280px]">
+                    <div class="absolute inset-0 z-0 bg-gradient-to-br from-surface-dark to-background-dark opacity-90">
+                    </div>
+                    <div class="relative z-10 p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="p-3 rounded bg-white/5 border border-white/10 text-primary group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
+                                <span class="material-symbols-outlined text-2xl">favorite</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-primary font-mono font-bold">14 LUTEGO</p>
+                                <p class="text-text-muted text-[10px] font-mono tracking-widest">IMPREZA</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3
+                                class="font-display font-bold text-2xl text-white uppercase mb-2 group-hover:translate-x-1 transition-transform duration-300">
+                                Rockowe Walentynki
+                            </h3>
+                            <p class="text-text-muted text-sm font-body line-clamp-3">
+                                Rockowe Walentynki na pełnym gazie! Świętujcie miłość do życia i maszyn razem z nami.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-0 right-0 p-3">
+                            <div class="w-3 h-3 border-r border-b border-primary/50"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Humor / Tłusty Czwartek Note -->
+            <div class="p-6 mt-4 border border-border-dark bg-background-dark rounded flex gap-4 items-center">
+                <span class="material-symbols-outlined text-primary text-3xl">mood</span>
+                <p class="font-body text-text-muted text-sm leading-relaxed">
+                    Tłusty Czwartek: "Tak tylko informacyjnie w kwestii pączków, by nie było później zdziwienia, że
+                    kombinezon motocyklowy jakoś tak po zimie stał się bardziej dopasowany." – <span
+                        class="text-primary">Rycerz Byczyna</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Signal -->
+    <footer id="contact"
+        class="w-full bg-surface-dark border-t border-border-subtle relative overflow-hidden group/footer">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-border-subtle overflow-hidden">
+            <div
+                class="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50 translate-x-[-100%] animate-[shimmer_3s_infinite]">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 py-12 lg:px-8">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-12 border-b border-border-subtle pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <h4 class="font-display font-bold text-primary tracking-[0.1em] text-sm uppercase">Kontakt Nawiązany
+                    </h4>
+                </div>
+                <div class="hidden sm:block">
+                    <span class="font-mono text-xs text-text-muted tracking-widest">// OFICJALNE NAMIARY</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
+                <!-- Baza -->
+                <div class="flex flex-col gap-4">
+                    <p class="font-mono text-sm text-primary tracking-wider mb-2">// BAZA / ADRES ZLOTÓW</p>
+                    <div class="flex flex-col gap-1 font-body text-text-main">
+                        <span class="text-lg font-medium">BSM RYCERZ</span>
+                        <span class="text-text-muted">ul. Poznańska 6</span>
+                        <span class="text-text-muted">46-220 Byczyna</span>
+                    </div>
+                </div>
+
+                <!-- Comms -->
+                <div class="flex flex-col gap-4">
+                    <p class="font-mono text-sm text-primary tracking-wider mb-2">// KOMUNIKACJA</p>
+                    <div class="space-y-6">
+                        <a class="group flex items-start gap-4 transition-colors hover:text-white"
+                            href="tel:+48608356204">
+                            <div
+                                class="p-2 border border-border-subtle rounded bg-background-dark/50 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300">
+                                <span
+                                    class="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors text-xl">call</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Telefon</span>
+                                <span
+                                    class="text-lg font-body text-text-main group-hover:text-primary transition-colors">+48
+                                    608 356 204</span>
+                            </div>
+                        </a>
+                        <a class="group flex items-start gap-4 transition-colors hover:text-white"
+                            href="mailto:rycerzbyczyna@gmail.com">
+                            <div
+                                class="p-2 border border-border-subtle rounded bg-background-dark/50 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300">
+                                <span
+                                    class="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors text-xl">alternate_email</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Email</span>
+                                <span
+                                    class="text-lg font-body text-text-main group-hover:text-primary transition-colors">rycerzbyczyna@gmail.com</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Uplink -->
+                <div class="flex flex-col gap-4">
+                    <p class="font-mono text-sm text-primary tracking-wider mb-2">// SOCIAL MEDIA</p>
+                    <div class="flex gap-4">
+                        <a href="https://www.facebook.com/rycerz.byczyna" target="_blank"
+                            class="group relative flex items-center justify-center w-12 h-12 rounded-full border border-border-subtle bg-transparent hover:bg-primary hover:border-primary transition-all duration-300 hover:shadow-glow">
+                            <svg aria-hidden="true"
+                                class="w-5 h-5 fill-text-main group-hover:fill-black transition-colors"
+                                viewbox="0 0 24 24">
+                                <path clip-rule="evenodd"
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                    fill-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="text-[10px] text-text-muted mt-4 font-mono">Bądź na bieżąco z naszymi wydarzeniami na
+                        Facebooku.</p>
+                </div>
+            </div>
+
+            <div
+                class="mt-16 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-text-muted">© 2026 Byczyńskie Stowarzyszenie Motocyklowe Rycerz.
+                        Wszelkie prawa zastrzeżone.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
